@@ -347,7 +347,7 @@ class Base
         return implode('', static::shuffleArray($array));
     }
 
-    private static function replaceWildcard($string, $wildcard = '#', $callback = 'static::randomDigit')
+    private static function replaceWildcard($string, $wildcard = '#', $callback = self::class . '::randomDigit')
     {
         if (($pos = strpos($string, $wildcard)) === false) {
             return $string;
@@ -392,7 +392,7 @@ class Base
                 $string[$toReplace[$i]] = $numbers[$i];
             }
         }
-        $string = self::replaceWildcard($string, '%', 'static::randomDigitNotNull');
+        $string = self::replaceWildcard($string, '%', self::class . '::randomDigitNotNull');
 
         return $string;
     }
@@ -405,7 +405,7 @@ class Base
      */
     public static function lexify($string = '????')
     {
-        return self::replaceWildcard($string, '?', 'static::randomLetter');
+        return self::replaceWildcard($string, '?', self::class . '::randomLetter');
     }
 
     /**
@@ -433,7 +433,7 @@ class Base
      */
     public static function asciify($string = '****')
     {
-        return preg_replace_callback('/\*/u', 'static::randomAscii', $string);
+        return preg_replace_callback('/\*/u', self::class . '::randomAscii', $string);
     }
 
     /**
@@ -500,9 +500,9 @@ class Base
             return Base::randomElement(str_split($matches[1]));
         }, $regex);
         // replace \d with number and \w with letter and . with ascii
-        $regex = preg_replace_callback('/\\\w/', 'static::randomLetter', $regex);
-        $regex = preg_replace_callback('/\\\d/', 'static::randomDigit', $regex);
-        $regex = preg_replace_callback('/(?<!\\\)\./', 'static::randomAscii', $regex);
+        $regex = preg_replace_callback('/\\\w/', self::class . '::randomLetter', $regex);
+        $regex = preg_replace_callback('/\\\d/', self::class . '::randomDigit', $regex);
+        $regex = preg_replace_callback('/(?<!\\\)\./', self::class . '::randomAscii', $regex);
         // remove remaining backslashes
         $regex = str_replace('\\', '', $regex);
         // phew

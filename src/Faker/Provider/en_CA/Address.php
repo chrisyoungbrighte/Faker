@@ -56,8 +56,8 @@ class Address extends \Faker\Provider\en_US\Address
     {
         $string = static::randomElement(static::$postcode);
 
-        $string = preg_replace_callback('/\#/u', 'static::randomDigit', $string);
-        $string = preg_replace_callback('/\?/u', 'static::randomPostcodeLetter', $string);
+        $string = preg_replace_callback('/\#/u', self::class . '::randomDigit', $string);
+        $string = preg_replace_callback('/\?/u', self::class . '::randomPostcodeLetter', $string);
 
         return static::toUpper($string);
     }
